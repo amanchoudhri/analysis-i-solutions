@@ -1,0 +1,151 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[margin=1in]{geometry}
+\geometry{letterpaper}
+\usepackage{graphicx}
+
+\setlength\parindent{0pt}
+
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newcommand{\R}{\mathbb{R}}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newlist{alphalist}{enumerate}{1}
+% label must be specified using \setlist
+\setlist[alphalist,1]{label=\alph*.}
+
+
+\title{MATH 4061 - Homework 1}
+\author{Aman Choudhri - \texttt{ac4972@columbia.edu}}
+
+\begin{document}
+
+\maketitle
+\subsection*{Problem 1}
+\begin{enumerate}
+    \item The following is the truth table for $(\neg A \implies \neg B)$.
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            $A$ & $B$ & $\neg A$ & $\neg B$ & $\neg A \implies \neg B$ \\
+            \hline
+            $T$ & $T$ & $F$ & $F$ & $T$ \\
+            $F$ & $T$ & $T$ & $F$ & $F$ \\
+            $T$ & $F$ & $F$ & $T$ & $T$ \\
+            $F$ & $F$ & $T$ & $T$ & $T$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \item The following is the truth table for $(\neg B \implies \neg A)$.
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|}
+            \hline
+            $A$ & $B$ & $\neg A$ & $\neg B$ & $\neg B \implies \neg A$ \\
+            \hline
+            $T$ & $T$ & $F$ & $F$ & $T$ \\
+            $F$ & $T$ & $T$ & $F$ & $T$ \\
+            $T$ & $F$ & $F$ & $T$ & $F$ \\
+            $F$ & $F$ & $T$ & $T$ & $T$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{enumerate}
+Comparing the two truth tables above with the following truth table for $A \implies B$,
+I conclude that $(\neg B \implies \neg A)$ and $A \implies B$ are equivalent.
+
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        $A$ & $B$ & $A \implies B$ \\
+        \hline
+        $T$ & $T$ & $T$ \\
+        $F$ & $T$ & $T$ \\
+        $T$ & $F$ & $F$ \\
+        $F$ & $F$ & $T$ \\
+        \hline
+    \end{tabular}
+\end{center}
+
+\section*{Problem 2}
+Given $A, B, C \subset M$.
+\begin{enumerate}
+    \item We want to show $(A \subset C) \wedge (B \subset C) \iff ((A \cup B) \subset C)$.
+    \begin{proof}
+        First show the forward direction. Assume $(A \subset C) \wedge (B \subset C)$ and take some element $x \in A \cup B$. Thus we have $x \in A \vee x \in B$.
+        If $x \in A$, we have $x \in C$ since $A \subset C$. Similarly, $x \in B$ gives us $x \in C$. So $x \in A \cup B \implies x \in C$, and thus $(A \cup B) \subset C$.
+
+        Next show the reverse direction. Assume $(A \cup B) \subset C$. For all $a \in A$, we have $a \in A \cup B$ and thus $a \in C$. So $A \subset C$. The same argument yields $B \subset C$, and thus $(A \subset C) \wedge (B \subset C)$.
+    \end{proof}
+    \item $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$.
+    \begin{proof}
+        Take some $x \in A \cap (B \cup C)$.
+        \begin{align*}
+            &\iff (x \in A) \wedge (x \in B \cup C) \\
+            &\iff (x \in A) \wedge ((x \in B) \vee (x \in C)) \\
+            &\iff ((x \in A) \wedge (x \in B)) \vee ((x \in A) \wedge (x \in C)) \\
+            &\iff (x \in A \cap B) \vee (x \in A \cap C) \\
+            &\iff x \in (A \cap B) \cup (A \cap C)
+        \end{align*}
+        Since $x \in A \cap (B \cup C)$ if and only if $x \in (A \cap B) \cup (A \cap C)$, the two sets are equal.
+    \end{proof}
+    \item $M \setminus (A \cup B) = (M \setminus A) \cap (M \setminus B)$.
+    \begin{proof}
+        Take some $x \in M \setminus (A \cup B)$.
+        \begin{align*}
+            &\iff (x \in M) \wedge \neg (x \in A \cup B) \\
+            &\iff (x \in M) \wedge \neg ((x \in A) \vee (x \in B)) \\
+            &\iff (x \in M) \wedge (\neg (x \in A) \wedge \neg (x \in B)) \\
+            &\iff (x \in M) \wedge ((x \notin A) \wedge (x \notin B)) \\
+            &\iff ((x \in M) \wedge (x \notin A)) \wedge ((x \in M) \wedge (x \notin B)) \\
+            &\iff (x \in M \setminus A) \wedge (x \in M \setminus B) \\
+            &\iff x \in ((M \setminus A) \cap (M \setminus B)) \\
+        \end{align*}
+        Thus the two sets are equal.
+    \end{proof}
+\end{enumerate}
+\section*{Problem 3}
+\begin{enumerate}
+    \item The cartesian product $I \times J$ of the line segments $I = J = [0, 1]$ is the unit square.
+    \item The cartesian product of a line $\R$ and a circle $\mathbb{S}^1$ is an infinite-length cylinder.
+    \item The cartesian product of two circles is a torus.
+\end{enumerate}
+The diagonal of $I \times J$ is the line $y = x$, restricted to $x \in [0, 1]$.
+The diagonal of the torus is essentially a circle along the surface of the torus passing through the outermost point on one side and the innermost point on the other side.
+
+\section*{Problem 4}
+Given a field $F$ and some $x \in F \setminus \{0\}$.
+\begin{enumerate}
+    \item $xy = xz \implies y = z$. 
+    \begin{proof}
+        Since $x \neq 0$, $x$ has some inverse $x^{-1}$. Multiplying both sides of the equation $xy = xz$ by this inverse yields
+        $$y = 1y = x^{-1}xy = x^{-1}xz = 1z = z,$$
+        and we're done.
+    \end{proof}
+    \item $xy = x \implies y = 1$.
+    \begin{proof}
+        Notice that $x = x(1)$, and so the initial statement becomes $xy = x(1)$.
+        Apply the previous proof to conclude $y = 1$.
+    \end{proof}
+    \item $xy = 1 \implies y = x^{-1}$.
+    \begin{proof}
+        Multiply both sides by $x^{-1}$, yielding
+        $$y = 1y = x^{-1}xy = x^{-1}(1) = x^{-1}$$
+    \end{proof}
+    \item $(x^{-1})^{-1} = x$.
+    \begin{proof}
+        To show that $x$ is the inverse of $x^{-1}$, it suffices to show that $xx^{-1} = x^{-1}x = 1$. But this follows from the properties of the inverse, and we're done.
+    \end{proof}
+\end{enumerate}
+
+\end{document}
