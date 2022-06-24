@@ -1,0 +1,120 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[margin=1in]{geometry}
+\geometry{letterpaper}
+\usepackage{graphicx}
+
+\setlength\parindent{0pt}
+
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand{\ip}[1]{\left \langle #1 \right \rangle}
+
+\newlist{alphalist}{enumerate}{1}
+% label must be specified using \setlist
+\setlist[alphalist,1]{label=\alph*.}
+
+
+\title{MATH 4061 - Homework 1}
+\author{Aman Choudhri - \texttt{ac4972@columbia.edu}}
+
+\begin{document}
+
+\maketitle
+\subsection*{Problem 1}
+Show that $\C$ is a field, where we define a complex number to be a pair $(a, b)$ with $a, b \in \R$.
+Take $x = (a, b), y = (c, d) \in \C$. We define two binary operations $+, \cdot: \C \rightarrow \C$ as follows:
+$$
+x + y := (a + c, b + d)
+$$
+$$
+x \cdot y := (ac - bd, ad + bc)
+$$
+In addition, define $1 \in \C$ by $(1, 0)$ and $0 \in \C$ by $(0, 0)$.
+\begin{proof}
+    First show that it satisfies the axioms for addition. Commutativity:
+    $$x + y = (a + c, b + d) = (c + a, d + b) = y + x,$$
+    where the middle step follows because $\R$ is a field. Let $z \in \C$ by $(e, f)$. Associativity:
+    $$x + (y + z) = (a + (c + e), b + (d + f)) = ((a + c) + e, (b + d) + f) = (x + y) + z$$
+    Show that $x + 0 = x$ for all $x \in \C$:
+    $$x + 0 = (a + 0, b + 0) = (a, b) = x$$
+    Lastly, define $-x := (-a, -b)$, which we know exists since $\R$ is a field, and show $x + (-x) = 0$:
+    $$x + (-x) = (a + (-a), b + (-b)) = (0, 0) = 0$$
+    Now the axioms for multiplication. Commutativity:
+    $$xy = (ac - bd, ad + bc) = (ca - db, cb + ad) = yx$$
+    Associativity:
+    \begin{align*}
+        x(yz) &= x(ce - df, cf + de) \\
+        &= (a(ce - df) - b(cf + de), a(cf + de) + b(ce - df)) \\
+        &= (ace - adf - bcf - bde, acf + ade + bce - bdf) \\
+        &= (ace - bde - adf - bcf , ade + bce + acf - bdf) \\
+        &= (e(ac - bd) - f(ad + bc), e(ad + bc) + f(ac - bd)) \\
+        &= (ac - bd, ad + bc) \cdot (e, f) \\
+        &= ((a, b) \cdot (c, d)) \cdot z \\
+        &= (xy)z
+    \end{align*}
+    Distributivity:
+    \begin{align*}
+        x(y + z) = x(c + e, d + f) &= (a(c + e) - b(d + f), a(d+f) + b(c + e)) \\
+        &= (ac + ae - bd - bf, ad + af + bc + be) \\
+        &= (ac + -bd, ad + bc) + (ae - bf, af + be) \\
+        &= xy + xz
+    \end{align*}
+    Show that $1x = x$ for all $x \in \C$:
+    $$1x = (1, 0) \cdot (a, b) = (1a - 0b, 1b + 0a) = (a, b) = x$$
+    For some nonzero complex number $x = (a, b)$, define $x^{-1}$ to be
+    $$\left(\frac{a}{a^2 + b^2}, \ \frac{-b}{a^2 + b^2} \right)$$
+    This is well defined because $x$ is nonzero and so $a$ and $b$ are nonzero as well. Now show that this functions as a multiplicative inverse:
+    \begin{align*}
+        xx^{-1} &= \left(a \left(\frac{a}{a^2 + b^2} \right) - b\left(\frac{-b}{a^2 + b^2}\right), \ a \left(\frac{-b}{a^2 + b^2}\right) + b \left(\frac{a}{a^2 + b^2}\right)\right) \\
+        &= \left( \frac{a^2}{a^2 + b^2} + \frac{b^2}{a^2 + b^2}, \ \frac{-ab}{a^2 + b^2} + \frac{ab}{a^2 + b^2} \right) \\
+        &= \left( \frac{a^2 + b^2}{a^2 + b^2}, \ 0 \right) \\
+        &= \left( 1, 0 \right) \\
+        &= 1
+    \end{align*}
+And we're done!
+\end{proof}
+Next, prove a few relations for $z, w \in \C$. Write $z = (a, b), w = (c, d)$.
+\begin{enumerate}
+    \item $\overline{z + w} = \overline{(a + c, b + d)} = (a + c, -b - d) = (a, - b) + (c, -d) = \overline{z} + \overline{w}$.
+    \item $\overline{zw} = \overline{(ac - bd, ad + bc)} = (ac - bd, -ad - bc) = (a, -b) \cdot (c, -d) = \overline{z} \cdot \overline{w}$.
+    \item $z + \overline{z} = (a, b) + (a, - b) = (2a, 0) = 2 \operatorname{Re}(z)$.\\
+    $z - \overline{z} = (a, b) - (a, -b) = (0, 2b) = 2b (0, 1) = 2i \operatorname{Im}(z)$
+    \item $|z| = z\overline{z} = (a, b) \cdot (a, -b) = (a^2 + b^2, -ab + ab) = (a^2 + b^2, 0)$. Since $a^2$ and $b^2$ are both nonnegative, their sum is nonnegative and thus $|z| \geq 0$ for all $z \in \C$.
+    
+    $|z| = 0 \iff z\overline{z} = 0 \iff (a^2 + b^2, 0) = 0 \iff a^2 + b^2 = 0 \iff a = 0 \wedge b = 0 \iff z = 0$
+    \item To show $|\overline{z}| = |z|$, first note that $\overline{\overline{z}} = z$ since $\overline{\overline{(a, b)}} = \overline{(a, -b)} = (a, b)$.
+    With that, it's clear that $|\overline{z}| = \overline{z} \cdot \overline{\overline{z}} = \overline{z} z = |z|$.
+\end{enumerate}
+
+\section*{Problem 2}
+Now, prove a series of facts about $\R^n$. Take $x, y, z \in \R^n$ and $\alpha \in \R$.
+\begin{enumerate}
+    \item Linearity of the inner product.
+        $$\ip{x + y, z} = \sum_{i = 1}^n (x_i + y_i) (z_i) = \sum_{i = 1}^n (x_i z_i) + (y_i z_i) = \sum_{i = 1}^n (x_i z_i) + \sum_{i = 1}^n (y_i z_i) = \ip{x, z} + \ip{y, z}$$
+        $$\ip{\alpha x, y} = \sum_{i=1}^n \alpha x_i y_i = \alpha \sum_{i=1}^n x_i y_i = \alpha \ip{x, y}$$
+    \item Symmetry of the real inner product.
+    $$\ip{x, y} = \sum_{i=1}^n x_i y_i = \sum_{i=1}^n y_i x_i = \ip{y, x}$$
+    \item Positive definiteness.
+    $$\ip{x, x} = \sum_{i=1}^n x_i^2,$$
+    which is nonnegative since each term $x_i^2 \geq 0$. In addition, we have
+    $$\ip{x, x} = 0 \iff \sum_{i=1}^n x_i^2 = 0 \iff (\forall i \leq n) \ x_i = 0  \iff x = 0$$
+    \item Cauchy-Schwarz.
+    $$|\ip{x, y}| = \left| \sum_{i=1}^n x_i y_i \right| \leq \sum_{i=1}^n |x_iy_i| \leq \sum_{i=1}^n |x_i||y_i| \leq \sqrt{\left( \sum_{i=1}^n x_i^2 \right) \left( \sum_{i=1}^n y_i^2 \right)} = \|x\| \|y\|,$$
+    where the pentultimate step is given by the Schwarz inequality.
+\end{enumerate}
+\end{document}
