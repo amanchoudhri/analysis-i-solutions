@@ -1,0 +1,218 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[margin=1in]{geometry}
+\geometry{letterpaper}
+\usepackage{graphicx}
+
+% \setlength\parindent{0pt}
+
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newlist{alphalist}{enumerate}{1}
+% label must be specified using \setlist
+\setlist[alphalist,1]{label=\alph*.}
+
+\newtheorem*{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+
+\title{Subsequences and the Bolzano-Weierstrass Theorem}
+\author{Aman Choudhri - \texttt{aman.choudhri@columbia.edu}}
+
+\begin{document}
+
+\maketitle
+I found Terrence Tao's treatment of subsequences in his \emph{Analysis I} to be fascinating, so I decided to typeset and publish a small set of notes on the section.
+
+\begin{definition}
+    Given a sequence $(a_n)_{n=0}^\infty$, say $(b_n)_{n=0}^\infty$ is a subsequence iff there exists a
+    strictly increasing function $f: \mathbb{N} \rightarrow \mathbb{N}$ such that
+    $$b_n = a_{f(n)} \text{ \ for all $n \in \mathbb{N}$.}$$
+\end{definition}
+
+For example, let $(a_n)_{n=0}^\infty$ be the sequence
+$$0, 1, 2, 3, ...$$
+Then the sequence containing only evens
+$$0, 2, 4, 6, ...$$
+is a subsequence, as is the sequence containing only primes
+$$2, 3, 5, 7, ....$$
+
+Unpacking the definition a bit, I like to think of $f$ as sort of a ``selection'' function,
+which picks elements from $(a_n)_{n=0}^\infty$ to put into a new sequence. In the above example of the sequence
+containing only the evens, the function $f: \mathbb{N} \rightarrow \mathbb{N}$ would be defined by
+$f(n) = 2n$.
+
+\begin{prop}
+    Let $(a_n)_{n=0}^\infty$ be a sequence of real numbers, and let $L \in \R$. Then the following statements are equivalent:
+    \begin{enumerate}[label=\emph{(\alph*)}]
+        \item The sequence $(a_n)_{n=0}^\infty$ converges to $L$.
+        \item Every subsequence of $(a_n)_{n=0}^\infty$ converges to $L$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    First, prove that (b) implies (a).
+    Assume every subsequence of $(a_n)_{n=0}^\infty$ converges to $L$.
+    Notice that $(a_n)_{n=0}^\infty$ is a subsequence of itself, given by the function $f(n) = n$, and so it converges to $L$ by assumption.
+    
+    Next, prove that (a) implies (b). 
+    Take some subsequence $(b_n)_{n=0}^\infty$ given by $b_n = a_{f(n)}$ for some strictly increasing function $f$.
+    To show that $(b_n)_{n=0}^\infty$ converges to $L$, let $\epsilon > 0$ and find some integer $N$ such that for all $n \geq N$ we have $|b_n - L| < \epsilon$.
+    First, note that since $f$ is strictly increasing, we have $f(n) \geq n$ for all $n$. This is easily shown by induction:
+    $f(0)$ is a natural number, so we must have $f(0) \geq 0$.
+    And assuming $f(n) \geq n$, $f$ strictly increasing gives us $f(n + 1) > f(n) \geq n$ so $f(n + 1) \geq n + 1$.
+
+    With this, use convergence of $(a_n)_{n=0}^\infty$ to get an integer $N$ such that for all $n \geq N$, we have
+    $| a_n - L | < \epsilon$.
+    Since $f(n) \geq f(N) \geq N$ for all $n \geq N$, we have in particular that $| a_{f(n)} - L | < \epsilon$. But $a_{f(n)} = b_n$, so
+    $$| b_n - L| < \epsilon,$$
+    completing the proof. 
+\end{proof}
+
+The first direction was relatively trivial, but I think the second highlights
+the importance of defining our ``selection'' function $f$ to be strictly increasing. If it was
+only restricted to be nondecreasing, for instance, we could let $f(n) = 0$ for all $n$. Then 
+$$1, 1, 1, ...,$$
+which clearly converges to $1$, would be a subsequence of
+$$1, \frac{1}{2}, \frac{1}{3}, ...,$$
+which converges to $0$. It would also be a valid subsequence of
+$$1, 2, 3, ...,$$
+which doesn't converge at all! Thus the strict increasing requirement corresponds to the idea of
+``filtering out'' elements from the original sequence to create a new sequence, without
+adding or duplicating anything.
+
+
+\begin{prop}\label{subseqconvtolimpt}
+    Again let $(a_n)_{n=0}^\infty$ be a sequence of real numbers, and let $L \in \R$. Then the
+    following statements are equivalent:
+    \begin{enumerate}[label=\emph{(\alph*)}]
+        \item $L$ is a limit point of $(a_n)_{n=0}^\infty$.
+        \item There exists a subsequence of $(a_n)_{n=0}^\infty$ which converges to $L$.
+    \end{enumerate}
+\end{prop}
+
+\begin{proof}
+    First show that (b) implies (a). Let $(b_n)_{n=0}^\infty$ be a subsequence that converges to $L$, given by $b_n = a_{f(n)}$.
+    Take some $\epsilon > 0$ and some natural number $N$. 
+    Since  $(b_n)_{n=0}^\infty$ converges to $L$, we can take some $M$ such that for all $m \geq M$,
+    $$|b_m - L| < \epsilon$$
+    Rewriting, we have that 
+    $|a_{f(m)} - L| < \epsilon$
+    for all $m \geq M$. Now let $n := \operatorname{max}(f(N), f(M))$. Since $f$ is strictly increasing,
+    $$n \geq f(N) \geq N \quad \text{and} \quad n \geq f(M) \geq M$$
+    Thus we have some $n \geq N$ such that $|a_n - L| < \epsilon$, and we're done.
+
+    \vspace*{0.5em}
+    Next show that (a) implies (b). Given that $L$ is a limit point of $(a_n)_{n=0}^\infty$, we want
+    to define a sequence of natural numbers
+    $m_0, m_1, ...$ such that the sequence $(b_n)_{n=0}^\infty$ given by $b_n = a_{m_n}$ converges to $L$.
+    Recall that since $L$ is a limit point, for all $\epsilon$ and all $N$, we can take some $n \geq N$ such that $|a_n - L| < \epsilon$.
+    For our first term, use $\epsilon = 1$ and $N = 0$ in this definition of a limit point to find some $m_0 \geq 0$ such that $|a_{m_0} - L| < 1$.
+    To recursively define the rest of the sequence, let $m_{n+1}$ be some natural number greater than $m_n$ such that $|a_{m_{n+1}} - L| < \frac{1}{n + 1}$.
+
+    Note that $(m_n)_{n=0}^\infty$ is strictly increasing by construction, so the sequence $(b_n)_{n=0}^\infty$ given by $b_n = a_{m_n}$ is a subsequence.
+    Now show that $(b_n)_{n=0}^\infty$ converges to $L$. Take some $\epsilon > 0$, and let $N$ be some natural number such that $N > \frac{1}{\epsilon}$.
+    Using our definition of $(b_n)_{n=0}^\infty$, we see that for all $n \geq N$ we have
+    $$|b_n - L| = |a_{m_n} - L| < \frac{1}{n + 1} < \frac{1}{N} < \epsilon,$$
+    and thus $(b_n)_{n=0}^\infty$ converges to $L$.
+
+\end{proof}
+
+With these facts established, we now turn to the Bolzano-Weierstrass theorem, which states that every bounded sequence has a convergent subsequence.
+Before we prove the theorem, though, it will be useful to establish the following lemmas.
+
+\begin{lemma}\label{limpts}
+    Let $(a_n)_{n=0}^\infty$ be a sequence with $\limsup_{n \rightarrow \infty} a_n = L$ for some $L \in \R$.
+    Then $L$ is a limit point of $(a_n)_{n=0}^\infty$.
+\end{lemma}
+
+\begin{proof}
+    Take $\epsilon > 0$ and some natural number $N$. The limit superior is defined to be
+    $$L := \inf (a_n^+)_{n=0}^\infty,$$
+    where $a_k^+ := \sup (a_n)_{n=k}^\infty$. Firstly, notice that the sequence $(a_n^+)_{n=0}^\infty$ is decreasing.
+    If it were not, there would exist some $n_1, n_2$ with $n_1 \leq n_2$ and
+    $$\sup (a_n)_{n=n_1}^\infty < \sup (a_n)_{n=n_2}^\infty$$
+    Then the difference $\delta := \sup (a_n)_{n=n_2}^\infty - \sup (a_n)_{n=n_1}^\infty$ would be positive, so by the properties of the supremum, there exists some $m \geq n_2$ such that
+    $$a_m > \sup (a_n)_{n=n_2}^\infty - \frac{\delta}{2} > \sup (a_n)_{n=n_1}^\infty$$
+    But this is a contradiction, since $m \geq n_2 \geq n_1$ means we should have $a_m \leq \sup (a_n)_{n=n_1}^\infty$.
+    Thus we can conclude that the sequence $(a_n^+)_{n=0}^\infty$ is decreasing.
+    
+    Next, use the properties of the infimum to take some $M$ such that
+    $$L \leq a_M^+ < L - \frac{\epsilon}{2}$$
+    Let $m := \max(N, M)$. Since $n \geq M$ and $(a_m^+)_{n=0}^\infty$ is decreasing, we have that
+    $$L \leq a_m^+ \leq a_M^+ < L - \frac{\epsilon}{2}$$
+    Rewriting, we see that $|a_m^+ - L| < \frac{\epsilon}{2}$.
+    Next, apply the definition of $a_m^+$ to get some $n \geq m$ such that
+    $$a_m^+ - \frac{\epsilon}{2} < a_n \leq a_m^+$$
+    Rewriting once again, we now have some $n \geq m \geq N$ such that $|a_n - a_m^+| < \frac{\epsilon}{2}$. Combining this with the inequality from above, we find
+    $$|a_n - L| \leq |a_n - a_m^+| + |a_m^+ - L| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon$$
+    Since we've found some $n \geq N$ with $|a_n - L| < \epsilon$, $L$ is a limit point of $(a_n)_{n=0}^\infty$.
+\end{proof}
+
+The above lemma is unsurprising, especially given the name, but I wanted to include it for the sake of completeness.
+\begin{lemma}\label{comparison}
+    For any sequences $(a_n)_{n=m}^\infty, (b_n)_{n=m}^\infty$ satisfying $a_n \leq b_n$ for all $n$, we have
+    \begin{equation}
+        \sup (a_n)_{n=m}^\infty \leq \sup (b_n)_{n=m}^\infty
+    \end{equation}
+    \begin{equation}
+        \inf (a_n)_{n=m}^\infty \leq \inf (b_n)_{n=m}^\infty
+    \end{equation}
+    \begin{equation}
+        \limsup_{n \rightarrow \infty} a_n \leq \limsup_{n \rightarrow \infty} b_n
+    \end{equation}
+\end{lemma}
+
+\begin{proof}
+    To prove inequality (1), write $S_b := \sup (b_n)_{n=m}^\infty$ and $S_a := \sup (a_n)_{n=m}^\infty$.
+    Assume for contradiction that $S_a > S_b$, and let $\epsilon = S_a - S_b > 0$.
+    By the definition of the supremum, there exists some $n$ such that $a_n > S_a - \epsilon = S_b$. But since $S_b$ is the supremum of $(b_n)_{n=0}^\infty$, we have
+    that in particular $S_b \geq b_n$. Combining these inequalities, we see that
+    $$a_n > S_a - \epsilon = S_b \geq b_n,$$
+    which is a contradiction since $a_n \leq b_n$ for all $n$ by assumption.
+
+    To prove inequality (2), write the infima as $I_a$ and $I_b$, and assume that $\epsilon := I_a - I_b > 0$.
+    Similar to above, take some $n$ such that $b_n < I_b + \epsilon = I_a$. But $I_a \geq a_k$ for all $k$, which in particular means
+    $$b_n < I_b + \epsilon = I_a \leq a_n,$$
+    which is again a contradiction.
+
+    Finally, to prove inequality (3), write the limits as $L_a$ and $L_b$ and apply the previous two inequalities to show $L_a \leq L_b$.
+    Since $a_n \leq b_n$, inequality (1) gives us
+    $$a_k^+ = \sup (a_n)_{n=k}^\infty \leq \sup (b_n)_{n=k}^\infty = b_k^+$$
+    for all $k \geq 0$. Since the sequences $(a_n^+)_{n=0}^\infty$ and $(b_n^+)_{n=0}^\infty$ satisfy $a_k^+ \leq b_k^+,$ we can apply inequality (2) to conclude:
+    $$L_a = \inf (a_n^+)_{n=0}^\infty \leq \inf (b_n^+)_{n=0}^\infty = L_b$$
+\end{proof}
+
+Now we have all the necessary machinery to prove the Bolzano-Weierstrass theorem. In fact, all the hard work is behind us!
+\begin{theorem}[Bolzano-Weierstrass]
+    Any bounded sequence $(a_n)_{n=0}^\infty$ has a convergent subsequence.
+\end{theorem}
+
+\begin{proof}
+    Since $(a_n)_{n=0}^\infty$ is bounded, we can take some $M$ such that $-M < a_n < M$ for all $n$.
+    Applying Lemma \ref{comparison} to the above inequalities, we find
+    $$-M = \limsup_{n \rightarrow \infty} (-M)_{n=0}^\infty \leq \limsup_{n \rightarrow \infty} (a_n)_{n=0}^\infty \leq \limsup_{n \rightarrow \infty} (M)_{n=0}^\infty = M$$
+    Since $L := \limsup_{n \rightarrow \infty} (a_n)_{n=0}^\infty$ satisfies $-M \leq L \leq M$, then it must be a real number.
+    So, we can apply Lemma \ref{limpts} to conclude that $L$ is a limit point of $(a_n)_{n=0}^\infty$.
+    And because $L$ is a limit point, Proposition \ref{subseqconvtolimpt} allows us to conclude that there exists some subsequence of $(a_n)_{n=0}^\infty$ that converges to $L$.
+\end{proof}
+
+
+\end{document}
