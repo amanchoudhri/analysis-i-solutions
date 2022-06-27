@@ -110,7 +110,7 @@ adding or duplicating anything.
 
 \begin{proof}
     First show that (b) implies (a). Let $(b_n)_{n=0}^\infty$ be a subsequence that converges to $L$, given by $b_n = a_{f(n)}$.
-    Take some $\epsilon > 0$ and some natural number $N$. 
+    Take some $\epsilon > 0$ and some natural number $N$. To show that $L$ is a limit point of $(a_n)_{n=0}^\infty$, we want some $n \geq N$ such that $|a_n - L| < \epsilon$.
     Since  $(b_n)_{n=0}^\infty$ converges to $L$, we can take some $M$ such that for all $m \geq M$,
     $$|b_m - L| < \epsilon$$
     Rewriting, we have that 
@@ -120,12 +120,16 @@ adding or duplicating anything.
     Thus we have some $n \geq N$ such that $|a_n - L| < \epsilon$, and we're done.
 
     \vspace*{0.5em}
-    Next show that (a) implies (b). Given that $L$ is a limit point of $(a_n)_{n=0}^\infty$, we want
+    Next show that (a) implies (b). We want
     to define a sequence of natural numbers
-    $m_0, m_1, ...$ such that the sequence $(b_n)_{n=0}^\infty$ given by $b_n = a_{m_n}$ converges to $L$.
-    Recall that since $L$ is a limit point, for all $\epsilon$ and all $N$, we can take some $n \geq N$ such that $|a_n - L| < \epsilon$.
-    For our first term, use $\epsilon = 1$ and $N = 0$ in this definition of a limit point to find some $m_0 \geq 0$ such that $|a_{m_0} - L| < 1$.
-    To recursively define the rest of the sequence, let $m_{n+1}$ be some natural number greater than $m_n$ such that $|a_{m_{n+1}} - L| < \frac{1}{n + 1}$.
+    $m_0, m_1, ...$ such that the sequence given by $b_n := a_{m_n}$ converges to $L$.
+    Define our first term by
+    $$m_0 := \min \{ k \in \N : |a_k - L| < 1 \}$$
+    The above set is clearly bounded below by $0$. To show that it is nonempty, take $\epsilon = 1$ and $N = 0$ in the definition of a limit point to get some $k \in \N$ with $|a_k - L | < 1$. Thus the minimum exists and $m_0$ is well defined.
+    Next, recursively define the rest of the sequence as follows:
+    $$m_{n+1} := \min \left\{ k > m_n : |a_k - L| < \frac{1}{n + 1} \right\}$$
+    Again, the set is clearly bounded below by $m_n$. Similarly to the argument above, the set is nonempty since we can take
+    $\epsilon = \frac{1}{n+1}$ and $N = m_n$ in the definition of a limit point to find some $k \geq m_n$ with $|a_k - L| < \frac{1}{n+1}$. Thus the minimum $m_{n+1}$ exists and is well-defined.
 
     Note that $(m_n)_{n=0}^\infty$ is strictly increasing by construction, so the sequence $(b_n)_{n=0}^\infty$ given by $b_n = a_{m_n}$ is a subsequence.
     Now show that $(b_n)_{n=0}^\infty$ converges to $L$. Take some $\epsilon > 0$, and let $N$ be some natural number such that $N > \frac{1}{\epsilon}$.
@@ -166,7 +170,7 @@ Before we prove the theorem, though, it will be useful to establish the followin
     Since we've found some $n \geq N$ with $|a_n - L| < \epsilon$, $L$ is a limit point of $(a_n)_{n=0}^\infty$.
 \end{proof}
 
-The above lemma is unsurprising, especially given the name, but I wanted to include it for the sake of completeness.
+The above lemma is perhaps unsurprising, but I wanted to include it for the sake of completeness. Next, another unsurprising but useful lemma.
 \begin{lemma}\label{comparison}
     For any sequences $(a_n)_{n=m}^\infty, (b_n)_{n=m}^\infty$ satisfying $a_n \leq b_n$ for all $n$, we have
     \begin{equation}
@@ -209,9 +213,9 @@ Now we have all the necessary machinery to prove the Bolzano-Weierstrass theorem
     Since $(a_n)_{n=0}^\infty$ is bounded, we can take some $M$ such that $-M < a_n < M$ for all $n$.
     Applying Lemma \ref{comparison} to the above inequalities, we find
     $$-M = \limsup_{n \rightarrow \infty} (-M)_{n=0}^\infty \leq \limsup_{n \rightarrow \infty} (a_n)_{n=0}^\infty \leq \limsup_{n \rightarrow \infty} (M)_{n=0}^\infty = M$$
-    Since $L := \limsup_{n \rightarrow \infty} (a_n)_{n=0}^\infty$ satisfies $-M \leq L \leq M$, then it must be a real number.
+    Since $L := \limsup_{n \rightarrow \infty} (a_n)_{n=0}^\infty$ satisfies $-M \leq L \leq M$, it must be a real number (i.e. not $+\infty$ or $-\infty$).
     So, we can apply Lemma \ref{limpts} to conclude that $L$ is a limit point of $(a_n)_{n=0}^\infty$.
-    And because $L$ is a limit point, Proposition \ref{subseqconvtolimpt} allows us to conclude that there exists some subsequence of $(a_n)_{n=0}^\infty$ that converges to $L$.
+    Because $L$ is a limit point of $(a_n)_{n=0}^\infty$, Proposition \ref{subseqconvtolimpt} allows us to conclude that there exists some subsequence of $(a_n)_{n=0}^\infty$ that converges to $L$.
 \end{proof}
 
 
